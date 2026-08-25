@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Metrics Pack · VinTrip In-Car · Trần Minh Quân</title>
+  <style>
+    :root {
+      --navy: #0d1a12;
+      --navy-2: #163024;
+      --ink: #15221a;
+      --muted: #5a6b61;
+      --line: #d5e0d8;
+      --paper: #f3f6f2;
+      --card: #ffffff;
+      --teal: #14804a;
+      --teal-soft: #e5f6ec;
+      --gold: #c4a035;
+      --gold-soft: #f7f0d8;
+      --rose: #9b2c2c;
+      --rose-soft: #fdecec;
+      --ok: #1f7a4d;
+      --ok-soft: #e7f6ee;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Be Vietnam Pro", system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.55;
+    }
+    .shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    nav {
+      position: sticky; top: 0; height: 100vh;
+      background: var(--navy); color: #e7f0ea;
+      padding: 28px 18px; overflow: auto;
+    }
+    nav .brand { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8fc9a8; }
+    nav h1 { font-size: 18px; margin: 8px 0 20px; font-weight: 700; line-height: 1.3; }
+    nav a {
+      display: block; color: #d5e8dc; text-decoration: none;
+      font-size: 13px; padding: 8px 10px; border-radius: 8px; margin-bottom: 4px;
+    }
+    nav a:hover, nav a:focus { background: #1c3d2c; }
+    main { padding: 36px 48px 80px; max-width: 980px; }
+    .hero {
+      background: linear-gradient(145deg, #0d1a12 0%, #163024 55%, #0e4d32 100%);
+      color: #fff; border-radius: 20px; padding: 36px 40px; margin-bottom: 28px;
+    }
+    .hero .kicker { color: #a8e0c0; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+    .hero h2 { margin: 8px 0 10px; font-size: 30px; line-height: 1.25; }
+    .hero p { margin: 0; color: #d5eadc; max-width: 64ch; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .chip {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+      padding: 4px 10px; border-radius: 999px; font-size: 12px;
+    }
+    section {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 16px; padding: 28px 32px; margin-bottom: 22px;
+    }
+    section h2 { margin: 0 0 6px; font-size: 22px; }
+    .lede { color: var(--muted); margin: 0 0 18px; }
+    h3 { font-size: 15px; margin: 22px 0 8px; color: var(--navy); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 8px; vertical-align: top; text-align: left; }
+    th { width: 28%; color: var(--navy); background: #eef6f1; font-weight: 600; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card {
+      border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: #fafcfb;
+    }
+    .card strong { display: block; margin-bottom: 4px; color: var(--navy); }
+    .ok { background: var(--ok-soft); color: var(--ok); }
+    .warn { background: var(--gold-soft); color: #7a5b00; }
+    .bad { background: var(--rose-soft); color: var(--rose); }
+    .teal { background: var(--teal-soft); }
+    .gate {
+      margin-top: 18px; padding: 12px 14px; border-radius: 12px;
+      background: var(--ok-soft); border: 1px solid #b7e0c8; font-size: 14px;
+    }
+    .gate b { color: var(--ok); }
+    .quote {
+      border-left: 4px solid var(--teal); padding: 10px 14px; background: var(--teal-soft);
+      border-radius: 0 10px 10px 0; font-size: 15px;
+    }
+    .loop {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; margin: 12px 0 18px;
+    }
+    .loop-col { display: flex; flex-direction: column; gap: 8px; }
+    .node {
+      border-radius: 12px; padding: 12px 14px; font-size: 13px; border: 1px solid var(--line);
+    }
+    .node .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .arrow { display: flex; align-items: center; color: var(--teal); font-weight: 700; padding: 0 4px; }
+    .formula { font-family: ui-monospace, Consolas, monospace; font-size: 13px; background: #eef6f1; padding: 10px 12px; border-radius: 8px; }
+    .example {
+      font-size: 14px; background: #0d1a12; color: #d8f0e2; padding: 12px 16px;
+      border-radius: 12px; margin: 8px 0 16px;
+    }
+    .checks { list-style: none; padding: 0; }
+    .checks li { padding: 8px 0 8px 28px; position: relative; border-bottom: 1px dashed var(--line); }
+    .checks li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 700; }
+    footer { color: var(--muted); font-size: 12px; margin-top: 8px; }
+    code { font-size: 13px; }
+    @media (max-width: 900px) {
+      .shell { grid-template-columns: 1fr; }
+      nav { position: relative; height: auto; }
+      main { padding: 20px; }
+      .grid-2, .loop { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); justify-content: center; }
+    }
+    @media print {
+      nav { display: none; }
+      .shell { grid-template-columns: 1fr; }
+      section, .hero { break-inside: avoid; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav>
+      <div class="brand">Day 23 · Track 1</div>
+      <h1>Metrics Pack<br>VinTrip</h1>
+      <a href="#s00">00 Phạm vi</a>
+      <a href="#s01">01 Core Action</a>
+      <a href="#s02">02 Nature & cadence</a>
+      <a href="#s03">03 Metric System</a>
+      <a href="#s04">04 Retention</a>
+      <a href="#s05">05 Product Loop</a>
+      <a href="#s06">06 Tracking</a>
+      <a href="#s07">07 Revision</a>
+      <a href="#gates">Năm gate</a>
+    </nav>
+    <main>
+      <header class="hero">
+        <div class="kicker">Product Metrics Lab · từ Core Action tới Tracking</div>
+        <h2>VinTrip: đo lịch trình khả thi được xác nhận trên xe, không đo lượt nói với AI</h2>
+        <p>Trợ lý trong xe VinFast (EV) nhận ý định đa ràng buộc («đi A, ăn sáng 5h, rồi tới B») rồi lập lịch. Value chỉ xảy ra khi tài xế <b>chốt một lịch có thể chạy được</b> — pin, giờ, điểm dừng khớp — không khi model vừa sinh câu trả lời.</p>
+        <div class="meta">
+          <span class="chip">Trần Minh Quân</span>
+          <span class="chip">MHV 2A202601768</span>
+          <span class="chip">Persona: chủ xe VinFast EV</span>
+          <span class="chip">Loop: project + event-response</span>
+        </div>
+      </header>
+
+      <section id="s00">
+        <h2>00 — Phạm vi</h2>
+        <p class="lede">Một dự án · một persona · một core job. Không phủ toàn bộ infotainment.</p>
+        <table>
+          <tr><th>Dự án</th><td><b>VinTrip — trợ lý lịch trình trong xe VinFast (xe điện)</b>. User nói/nhập ý định đa điểm, hệ thống tự ghép giờ xuất phát, điểm ăn, điểm sạc, tuyến đường. Use case chốt: <b>lập lịch một ngày/chuyến có ràng buộc giờ + điểm + pin</b>. Không phân tích karaoke, điều hòa, hay «hỏi đáp chung» trên xe.</td></tr>
+          <tr><th>Persona</th><td><b>Nam</b>, ~34 tuổi, chủ xe VinFast EV, vừa chạy việc vừa đưa đón gia đình. Không phải kỹ sư, không lập lịch trên laptop trước khi ra xe. Ngồi sau vô-lăng, nói chuyện với trợ lý vì tay đang bận.</td></tr>
+          <tr><th>Core job</th><td>«Tôi muốn đi A bằng xe này, 5 giờ sáng phải ăn, rồi tới B — đừng để tôi vừa lái vừa tính giờ, chỗ ăn, chỗ sạc. Tự ghép lịch trên điện thoại vừa chậm vừa nguy hiểm, mà tự ước pin thì hay tới nơi lúc đói hoặc suýt hết điện.»</td></tr>
+        </table>
+        <div class="example">Ví dụ ý định thật (không phải core action): «Tôi muốn đi đến A bằng xe Vin này, muốn ăn sáng lúc 5a.m, rồi đi đến B.»</div>
+        <p class="lede" style="margin:0">Core job không viết «cần AI assistant thông minh trên xe» — đó là tính năng. Ở đây là nỗi sợ vừa lái vừa lập lịch, lệch giờ ăn, và hết pin giữa đường.</p>
+      </section>
+
+      <section id="s01">
+        <h2>01 — Core Action</h2>
+        <p class="lede">Hành vi chứng minh user nhận value — không phải mở app, đánh thức trợ lý, hay «hỏi AI».</p>
+
+        <h3>1. Phân biệt bốn khái niệm</h3>
+        <table>
+          <tr><th>Khái niệm</th><th>Câu hỏi</th><th>VinTrip · lịch trình đa ràng buộc</th></tr>
+          <tr><th>Core job</th><td>User đang cố hoàn thành việc gì?</td><td>Có một lịch chạy được trong ngày/chuyến: đúng giờ ăn, tới B, không hết pin.</td></tr>
+          <tr><th>Core action</th><td>User làm gì trong sản phẩm để tiến tới giá trị?</td><td><b>Xác nhận một lịch trình đa điểm khả thi</b> để xe bám theo (giờ — điểm dừng — sạc nếu cần).</td></tr>
+          <tr><th>Core value</th><td>User nhận được lợi ích gì?</td><td>Biết lúc nào xuất phát, ăn ở đâu, sạc ở đâu, đi A rồi B mà không tự ghép tay.</td></tr>
+          <tr><th>Core value event</th><td>Sự kiện nào chứng minh value đã xảy ra?</td><td><code>itinerary_confirmed</code> — lịch trở thành chuyến đang chạy, không phải lúc AI vừa vẽ plan.</td></tr>
+        </table>
+        <p>Nói câu lệnh là trigger. AI sinh lịch là output hệ thống. Value chỉ chốt khi Nam <b>nhận lịch và xác nhận dùng</b>. Giống «đặt xe là action, chuyến hoàn thành mới xác nhận value» — ở đây xác nhận lịch khả thi là mốc value gần nhất có thể lặp; hoàn thành waypoint là depth, không phải core action (phụ thuộc giao thông ngoài sản phẩm).</p>
+
+        <h3>2. Core Action Card</h3>
+        <table>
+          <tr><th>Target user</th><td>Nam — chủ/tài xế xe VinFast EV, đang trong xe hoặc app gắn xe, có ý định đa ràng buộc.</td></tr>
+          <tr><th>Core job</th><td>Ghép một chuyến A → ăn/sạc → B thành lịch chạy được, không vừa lái vừa tính.</td></tr>
+          <tr><th>Core action</th><td>Xác nhận (giọng nói hoặc bấm) một lịch trình đa điểm khả thi để biến thành chuyến active.</td></tr>
+          <tr><th>Object</th><td>Một itinerary (trip_id) — không phải «câu chat», không phải «toàn bộ xe».</td></tr>
+          <tr><th>Preconditions</th><td>Đã nhận diện xe/user; đã gửi ý định đủ chỗ đến + ít nhất một ràng buộc giờ/điểm; hệ thống đã đề xuất ≥1 lịch <b>khả thi</b> (tới được bằng pin hiện tại hoặc có điểm sạc; cửa sổ giờ ăn/đi không mâu thuẫn).</td></tr>
+          <tr><th>Completion rule</th><td>User confirm thành công và itinerary chuyển <code>draft → active</code>. AI vừa render map thì <b>chưa</b> xong. Confirm nhầm lịch infeasible (hết pin trước B, ăn sáng 5h nhưng tới quán 7h) không đếm core action đạt chuẩn. Hủy trong vài phút trước khi xuất phát thì xem như chưa hoàn tất value.</td></tr>
+          <tr><th>Core value</th><td>Có lịch bám được: giờ xuất phát, điểm ăn, điểm sạc, thứ tự A→B — không còn tự ghép.</td></tr>
+          <tr><th>Evidence of value</th><td>itinerary status = active; có ETA các stop; nếu pin không đủ thì lịch có charging stop; user không discard ngay.</td></tr>
+          <tr><th>Candidate event</th><td><code>itinerary_confirmed</code></td></tr>
+        </table>
+
+        <h3>3. Tự kiểm 5 tiêu chí</h3>
+        <table>
+          <tr><th>Tiêu chí</th><th>Kết quả</th><th>Lý do</th></tr>
+          <tr><th>Gần core value</th><td><span class="chip ok">Đạt</span></td><td>Chốt lịch khả thi = Nam đã nhận value lập lịch. Nói với AI mới chỉ là đường tới đó.</td></tr>
+          <tr><th>Có thể lặp lại</th><td><span class="chip ok">Đạt</span></td><td>Mỗi ngày/chuyến có ràng buộc mới là một lần nhu cầu quay lại.</td></tr>
+          <tr><th>Có thể quan sát</th><td><span class="chip ok">Đạt</span></td><td>draft → active + persist trip_id, không mơ hồ.</td></tr>
+          <tr><th>Có ý nghĩa</th><td><span class="chip ok">Đạt</span></td><td>Nhiều lịch đạt chuẩn được chốt = sản phẩm đang thay thế lập lịch tay. Nhiều lượt nói với AI chưa chắc tốt hơn.</td></tr>
+          <tr><th>Có thể tác động</th><td><span class="chip ok">Đạt</span></td><td>Team cải thiện parser ý định, feasibility pin, gợi ý quán/trạm sạc, UX confirm bằng giọng.</td></tr>
+        </table>
+        <p><b>Tổng: 5/5.</b> Không chọn lại.</p>
+
+        <h3>Vì sao không phải thao tác giao diện hay output hệ thống</h3>
+        <div class="grid-2">
+          <div class="card bad"><strong>Loại</strong>Mở app / đánh thức trợ lý / «Hey Vin» — chưa có lịch.</div>
+          <div class="card bad"><strong>Loại</strong>«Hỏi AI» / gửi câu «tôi muốn đi A…» — đó là trigger. AI vẽ lịch là output hệ thống, chưa phải user nhận value.</div>
+          <div class="card warn"><strong>Loại làm NSM</strong>Hoàn thành cả chuyến (tới B) — gần value thật nhưng phụ thuộc kẹt xe, quán đóng cửa; team tác động yếu hơn confirm lịch khả thi.</div>
+          <div class="card teal"><strong>Giữ</strong>Xác nhận lịch đa điểm khả thi — actor, object, completion rule rõ; lặp khi có chuyến mới; team tác động được.</div>
+        </div>
+        <div class="gate"><b>GATE 1 — đạt.</b> Actor = Nam / tài xế EV. Object = itinerary. Completion = confirm + active. 5/5 tiêu chí. Không phải «mở app» hay «hỏi AI».</div>
+      </section>
+
+      <section id="s02">
+        <h2>02 — Nature & cadence</h2>
+        <p class="lede">Nhịp nhu cầu tự nhiên trước. Không dùng notification trên xe để bịa daily habit.</p>
+
+        <h3>1. Action Nature Card</h3>
+        <table>
+          <tr><th>Actor</th><td>User (chủ xe / tài xế) trên một itinerary. Có thể roll-up theo vehicle, nhưng retention đo user.</td></tr>
+          <tr><th>Intent</th><td>Một ngày/chuyến có ≥2 ràng buộc: địa điểm, giờ ăn/họp, pin xe điện.</td></tr>
+          <tr><th>Trigger</th><td><b>User chủ động + sự kiện đời thật:</b> sáng phải đi làm/đưa đón, có bữa ăn cố định, hoặc chuyến xa cần sạc. Không phải hệ thống gọi họ dậy để «dùng app».</td></tr>
+          <tr><th>Effort</th><td>Thấp–trung bình nếu nói 1 câu rồi confirm. Cao nếu phải sửa 4–5 lần vì lịch sai pin/giờ — lúc đó nature đang bị sản phẩm làm khó.</td></tr>
+          <tr><th>Value timing</th><td><b>Ngay</b> khi lịch active (biết giờ xuất phát, stop). <b>Trễ</b> khi tới quán đúng 5h / tới B còn pin — chỉ biết sau khi chạy.</td></tr>
+          <tr><th>State</th><td>Lịch active, điểm quen, khung giờ ăn sáng, trạm sạc Vin đã dừng, dung lượng pin lúc confirm, preference «không muốn lệch giờ ăn».</td></tr>
+          <tr><th>Dependency</th><td>Bản đồ / giao thông; mạng lưới sạc; giờ mở cửa quán; SoC pin xe; micro/ASR trong cabin.</td></tr>
+          <tr><th>Repeat condition</th><td>Ngày khác có A/B mới; cùng route nhưng đổi giờ ăn; chuyến xa cần sạc; lịch cũ bị lệch (kẹt xe) cần lập lại.</td></tr>
+        </table>
+
+        <h3>2. Dạng hành vi và kết luận cadence</h3>
+        <p>Dạng hành vi chính: <b>theo dự án / theo chuyến</b> kết hợp <b>phản ứng theo sự kiện</b> (có ngày nhiều ràng buộc mới cần lập lịch). Không phải thói quen mở app mỗi sáng kiểu streak. Ngồi vào xe mỗi ngày <b>không</b> có nghĩa phải lập lịch mỗi ngày — đi A→nhà một mạch thì không có core job.</p>
+        <div class="quote">
+          Đối với <b>chủ xe VinFast EV chạy việc và sinh hoạt</b>, core action <b>xác nhận lịch trình đa điểm khả thi</b> thường xuất hiện <b>vài lần mỗi tuần</b> vì <b>nhu cầu ghép giờ–điểm–pin chỉ trỗi khi ngày đó có nhiều ràng buộc, không phải mỗi lần nổ máy</b>. Do đó, nhịp đo phù hợp là <b>theo tuần</b> ở cấp <b>user (chủ xe)</b>, không phải DAU.
+        </div>
+        <p>Frequency cao hơn <b>không</b> luôn là value cao hơn: 15 lần nói với AI trong một chuyến vì lịch sai pin kém hơn 1 lần confirm lịch chạy được. Với sản phẩm AI trên xe, <b>xong việc nhanh (1 request → 1 lịch khả thi → confirm)</b> tốt hơn «dùng trợ lý lâu». Không chọn daily vì dashboard hay dùng daily.</p>
+        <div class="gate"><b>GATE 2 — đạt.</b> Kết luận đúng template, có «vì» (ràng buộc không phải mỗi lần ngồi vào xe). Nhịp tuần khớp dạng theo chuyến / sự kiện; không mâu thuẫn.</div>
+      </section>
+
+      <section id="s03">
+        <h2>03 — Metric System</h2>
+        <p class="lede">Metric đi từ use case. Active (mở xe / nói với trợ lý) ≠ activated (đã chốt lịch khả thi).</p>
+
+        <h3>1. Activation</h3>
+        <table>
+          <tr><th>Start event</th><td><code>trip_request_submitted</code> lần đầu — Nam đã nói/nhập xong một ý định lập lịch, không phải chỉ đánh thức mic.</td></tr>
+          <tr><th>Activation event</th><td><code>itinerary_confirmed</code> lần đầu trên lịch <b>đạt chuẩn khả thi</b> — first value. Không phải «xem hết tutorial giọng nói», không phải login VinID.</td></tr>
+          <tr><th>Time window</th><td>Trong <b>7 ngày / hoặc 3 phiên lái có request</b> kể từ start (lấy mốc nào tới trước). Lần đầu ngồi xe là phải chốt được 1 lịch chạy được; lâu hơn là parser/feasibility/UX confirm đang kẹt.</td></tr>
+        </table>
+        <p class="formula">Activated = first quality itinerary_confirmed trong ≤ 7 ngày sau first trip_request_submitted.</p>
+
+        <h3>2. Engagement — hai góc</h3>
+        <div class="grid-2">
+          <div class="card teal"><strong>Frequency</strong>Số lịch đạt chuẩn được xác nhận mỗi user mỗi tuần — khớp cadence Phase 2.</div>
+          <div class="card teal"><strong>Depth</strong>Tỉ lệ lịch confirmed có ≥2 stop có ràng buộc (giờ ăn / sạc) <b>và</b> user bắt đầu trip (<code>trip_started</code>) — không đếm confirm rồi bỏ.</div>
+        </div>
+        <p>Không lấy breadth (điều hòa + nhạc + lịch) làm góc chính: use case này là lập lịch chuyến, không phải «dùng càng nhiều tính năng xe càng tốt».</p>
+
+        <h3>3. North Star Metric</h3>
+        <p class="formula">NSM = số <b>lịch trình đa điểm khả thi được xác nhận và bắt đầu chạy</b> (unit) · feasibility + không bỏ ngay (quality) · <b>/ user / tuần</b> (frequency)</p>
+        <table>
+          <tr><th>Unit of value</th><td>Một itinerary confirmed → trip started. Một kết luận «lịch này chạy được» mà tài xế thật sự dùng.</td></tr>
+          <tr><th>Quality threshold</th><td>(1) ≥2 stop hoặc 1 stop + ràng buộc giờ; (2) feasibility pin: SoC đủ hoặc có charging stop; (3) cửa sổ giờ ăn/đi không mâu thuẫn; (4) không <code>itinerary_abandoned</code> trong 15 phút trước khi xuất phát.</td></tr>
+          <tr><th>Frequency</th><td>Theo user, theo tuần — không MAU, không «số utterance / ngày».</td></tr>
+        </table>
+        <p>NSM phản ánh value (có lịch chạy được), không phải số câu hỏi AI hay phút mở màn hình xe.</p>
+
+        <h3>4. Leading indicators (tối đa 3)</h3>
+        <table>
+          <tr><th>Leading</th><th>Vì sao tin nó dự báo core action lặp lại</th></tr>
+          <tr><th>% request ra được ≥1 lịch feasibility = true</th><td>Không có lịch khả thi thì không có gì để confirm; lần sau Nam hết tin, không lặp.</td></tr>
+          <tr><th>Thời gian request → first feasible itinerary hiện ra</th><td>Trong xe, chờ lâu = bỏ cuộc. Hiện nhanh thì confirm ngay trong cùng phiên, và còn dám dùng chuyến sau.</td></tr>
+          <tr><th>% lịch được xem stop sạc/ăn trước khi confirm</th><td>Nam tin ràng buộc đã được hiểu → ít regenerate → confirm lặp lại được, không phải chat mòn.</td></tr>
+        </table>
+
+        <h3>5. Counter-metric</h3>
+        <div class="grid-2">
+          <div class="card bad"><strong>Counter chính</strong>Tỉ lệ lịch confirmed rồi abandoned / regenerate ≥3 lần trước khi chốt. NSM «tăng» vì bấm confirm bừa rồi hủy thì trải nghiệm đang xấu (lịch sai giờ ăn hoặc sai pin).</div>
+          <div class="card bad"><strong>Counter AI + EV</strong><code>constraint_missed</code> (tới quán lệch cửa sổ ăn, hoặc SoC lúc tới B dưới ngưỡng an toàn) và chi phí generate / request. Core action tăng nhưng lịch không giữ được ràng buộc 5a.m / pin là value giả.</div>
+        </div>
+      </section>
+
+      <section id="s04">
+        <h2>04 — Retention Definition</h2>
+        <p class="lede">Đủ sáu thành phần. Window = tuần, khớp cadence «vài lần mỗi tuần» — không đo D1/D7 như app consumer ép daily.</p>
+        <table>
+          <tr><th>Unit</th><td><b>User</b> (chủ xe / tài xế đã gắn VinID). Không lấy trip làm unit retention — trip không «quay lại dùng sản phẩm».</td></tr>
+          <tr><th>Cohort entry</th><td>First quality <code>itinerary_confirmed</code> (kèm trip_started) — cùng activation. Vào cohort khi đã nhận first value, không khi chỉ nói với mic.</td></tr>
+          <tr><th>Return event</th><td>Quality <code>itinerary_confirmed</code> (đủ ngưỡng NSM) trên một trip_id mới.</td></tr>
+          <tr><th>Window</th><td><b>Tuần</b> (T2–CN, timezone xe). Khớp «vài lần/tuần». Không daily — sai nature (không lập lịch mỗi lần nổ máy). Không monthly — chậm hơn nhịp người chạy việc.</td></tr>
+          <tr><th>Threshold</th><td><b>≥ 1</b> return event đạt chuẩn trong tuần. (Không ép 5 ngày/tuần: nhiều ngày chỉ đi 1 mạch, không có core job.)</td></tr>
+          <tr><th>Segment</th><td>Chủ xe EV đã có ≥1 trip request trong 28 ngày (còn nhu cầu di chuyển). Loại tài khoản test, bot, xe demo nội bộ.</td></tr>
+        </table>
+        <p class="formula">W1 retained = user first-confirm tuần 0, và tuần 1 có ≥ 1 quality itinerary_confirmed (trip_id mới).</p>
+        <p>So ba mốc, không bịa số: (1) natural cycle = tuần có ngày đa ràng buộc; (2) cohort = user đã từng nhận first value; (3) category = in-car planner / trip tool, không so DAU mạng xã hội.</p>
+        <div class="gate"><b>GATE 3 — đạt.</b> Activation có start / activation / window. Retention đủ 6 thành phần, khớp tuần. NSM đủ 3 thành phần. Có counter abandon + constraint_missed.</div>
+      </section>
+
+      <section id="s05">
+        <h2>05 — Product Loop</h2>
+        <p class="lede">Loop suy ra từ metric. Loại: <b>project / theo chuyến</b> + event-response. Không bắt đầu bằng streak hay notification «đừng quên lập lịch hôm nay».</p>
+
+        <h3>Hai chu kỳ tối thiểu</h3>
+        <div class="loop">
+          <div class="loop-col">
+            <div class="node teal"><div class="lbl">Chu kỳ 1 · Natural trigger</div>Sáng có việc: đi A, ăn 5h, rồi B, lo pin xe điện</div>
+            <div class="node"><div class="lbl">Core action</div>Nói ý định → xem lịch khả thi → <b>confirm itinerary</b></div>
+            <div class="node teal"><div class="lbl">Immediate value</div>Biết giờ xuất phát, quán ăn, trạm sạc, thứ tự A→B</div>
+            <div class="node warn"><div class="lbl">Saved state / investment</div>Điểm quen · khung giờ ăn · trạm sạc đã dừng · cách Nam confirm giọng</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="loop-col">
+            <div class="node teal"><div class="lbl">Chu kỳ 2 · Next natural trigger</div>Ngày/chuyến khác có ràng buộc — <b>vì phải đi thật</b>, không vì push</div>
+            <div class="node"><div class="lbl">Core action tiếp</div>Confirm lịch mới; hệ thống tái dùng preference (ăn sớm, sạc Vin, né lệch giờ)</div>
+            <div class="node teal"><div class="lbl">Repeat value</div>Ít sửa hơn, 1 câu là ra lịch khả thi, đúng giờ ăn / còn pin lúc tới B</div>
+          </div>
+        </div>
+        <p><b>Reason to return nếu bỏ notification:</b> Nam vẫn phải đi A rồi B. Investment là điểm quen + pin pattern + giờ ăn. Không trả lời được bằng badge «streak 7 ngày lập lịch».</p>
+
+        <h3>Metric hypothesis</h3>
+        <div class="quote">
+          Nếu loop này hoạt động, metric <b>số lịch trình đa điểm khả thi được xác nhận và bắt đầu chạy / user / tuần</b> sẽ <b>tăng</b> trong <b>4 tuần</b>, vì <b>saved preference (giờ ăn, trạm sạc, điểm quen) làm lịch lần sau khả thi ngay từ đề xuất đầu, Nam confirm được nhiều chuyến đạt chuẩn hơn mà không cần nói qua lại</b>.
+        </div>
+        <div class="gate"><b>GATE 4a — đạt.</b> Loop ≥ 2 chu kỳ; hypothesis trỏ NSM Phase 3; reason to return là chuyến đi thật + state, không phải notification.</div>
+      </section>
+
+      <section id="s06">
+        <h2>06 — Tracking nhanh</h2>
+        <p class="lede">Event = điều đã xảy ra. 7 events, mỗi cái map một metric. Không track từng token giọng nói.</p>
+        <table>
+          <tr>
+            <th>Tên event</th>
+            <th>Ý nghĩa — điều đã xảy ra</th>
+            <th>Thời điểm ghi nhận</th>
+            <th>Metric sử dụng</th>
+          </tr>
+          <tr>
+            <td><code>trip_request_submitted</code></td>
+            <td>Ý định lập lịch đã gửi xong (đủ điểm đến hoặc ràng buộc), không phải ASR dở câu.</td>
+            <td>User dừng nói / bấm gửi; intent parse thành work item.</td>
+            <td>Activation — start event · leading (mẫu số % feasible)</td>
+          </tr>
+          <tr>
+            <td><code>itinerary_generated</code></td>
+            <td>Hệ thống đã sinh một lịch (output máy) — chưa phải value.</td>
+            <td>Plan persist + hiện trên HUD/app, kèm cờ feasibility.</td>
+            <td>Leading: % request có lịch feasibility = true · time-to-first-plan</td>
+          </tr>
+          <tr>
+            <td><code>itinerary_confirmed</code></td>
+            <td><b>Core value event:</b> user chốt lịch, draft → active.</td>
+            <td>Confirm giọng/tap được accept; status active.</td>
+            <td>Activation · NSM (cùng quality) · frequency · retention return</td>
+          </tr>
+          <tr>
+            <td><code>trip_started</code></td>
+            <td>Chuyến bắt đầu (nav/waypoint đầu active) — user thật sự dùng lịch.</td>
+            <td>Xe bắt đầu follow stop đầu, không lúc preview map.</td>
+            <td>NSM quality · engagement depth</td>
+          </tr>
+          <tr>
+            <td><code>itinerary_abandoned</code></td>
+            <td>Lịch active bị hủy / đổi trắng trước khi hoàn thành stop đầu.</td>
+            <td>User cancel hoặc confirm lịch khác đè trip_id trong cửa sổ abandon.</td>
+            <td>Counter-metric rubber confirm</td>
+          </tr>
+          <tr>
+            <td><code>itinerary_regenerated</code></td>
+            <td>User yêu cầu sinh lại lịch trên cùng request (điều đã xảy ra: regenerate).</td>
+            <td>Lần generate thứ 2+ cùng request_id.</td>
+            <td>Counter (≥3 lần) · leading ngược (effort tăng)</td>
+          </tr>
+          <tr>
+            <td><code>constraint_missed</code></td>
+            <td>Stop hoàn thành nhưng lệch cửa sổ giờ ăn/họp hoặc SoC lúc tới dưới ngưỡng.</td>
+            <td>Khi waypoint_completed mà sai constraint đã confirm.</td>
+            <td>Counter chất lượng lịch / EV</td>
+          </tr>
+        </table>
+        <p>Không track <code>wake_word_detected</code> hay mọi tap trên HUD: không map metric Phase 3.</p>
+
+        <h3>Tiêu chí nghiệm thu (≥ 2)</h3>
+        <div class="card" style="margin-bottom:10px">
+          <strong>AC1 — chỉ ghi khi hành vi hoàn tất</strong>
+          Với mỗi <code>trip_id</code>, chỉ ghi <code>itinerary_confirmed</code> khi itinerary chuyển draft → active sau confirm thành công. Không bắn khi AI vừa <code>itinerary_generated</code>, khi user mới nói «tôi muốn đi A…», hay khi confirm bị từ chối (lịch infeasible). <code>trip_request_submitted</code> chỉ bắn khi utterance/form kết thúc, không từng partial ASR.
+        </div>
+        <div class="card">
+          <strong>AC2 — reload / retry / lặp giọng không trùng</strong>
+          Cùng một lần chuyển trạng thái (một <code>trip_id</code>, một confirm) không tạo thêm event khi màn hình xe redraw, user nói lại «đồng ý» trên lịch đã active, hay retry mạng. Idempotent theo <code>trip_id</code> + version lịch. <code>itinerary_generated</code> lần đầu và <code>itinerary_regenerated</code> phải tách; poll HUD không nhân bản generate.
+        </div>
+        <div class="gate"><b>GATE 4b — đạt.</b> 7 event map metric. Hai AC đúng bẫy «bắn khi AI chưa xong / user chưa confirm» và «trùng khi redraw/retry».</div>
+      </section>
+
+      <section id="s07">
+        <h2>07 — Revision</h2>
+        <p>Không đổi core action hay cadence sau tự soi. Chỉ siết NSM: confirm phải kèm <code>trip_started</code> và feasibility pin/giờ — tránh đếm confirm bừa trên HUD.</p>
+        <p>Ứng viên đã loại: đánh thức trợ lý; gửi prompt; lấy «số câu nói với AI» làm NSM; DAU vì «user ngồi xe mỗi ngày»; hoàn thành tới B làm core action (phụ thuộc kẹt xe).</p>
+      </section>
+
+      <section id="gates">
+        <h2>Phase 5 — Tự soi 7 câu</h2>
+        <ul class="checks">
+          <li>Core action không phải thao tác giao diện hay output hệ thống? <b>Đúng</b> — confirm lịch khả thi, không phải hỏi AI.</li>
+          <li>Activation không phải «xem hết hướng dẫn» hay «đăng nhập»? <b>Đúng</b> — first quality itinerary_confirmed trong 7 ngày.</li>
+          <li>Frequency không cao hơn nhu cầu thật? <b>Đúng</b> — vài lần/tuần; không ép lập lịch mỗi lần nổ máy.</li>
+          <li>Loop có reason to return ngoài notification? <b>Đúng</b> — vẫn phải đi A→B; preference đã lưu.</li>
+          <li>Retention không dùng chung window cho mọi cadence? <b>Đúng</b> — tuần, threshold 1; không D7 daily habit.</li>
+          <li>Mọi event đều map về một metric? <b>Đúng</b> — cột Metric ở mục 06.</li>
+          <li>Metric nào cũng có event để tính nó? <b>Đúng</b> — NSM/retention ← confirmed + trip_started; leading ← generated/feasible/time; counter ← abandoned, regenerated, constraint_missed.</li>
+        </ul>
+        <div class="gate"><b>GATE 5 — đạt.</b> Bảy câu đã đối chiếu; không giữ lựa chọn phá rule.</div>
+        <p><b>Áp dụng ngay cho VinTrip:</b> (1) đừng báo cáo «số lượt nói với trợ lý»; (2) feasibility pin là điều kiện đếm NSM, không phải feature phụ; (3) confirm trên xe phải idempotent — cabin redraw rất hay bắn trùng event.</p>
+      </section>
+      <footer>Track1_Day23_2A202601768_TranMinhQuan · Metrics Pack · không bịa benchmark retention.</footer>
+    </main>
+  </div>
+</body>
+</html>
